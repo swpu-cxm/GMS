@@ -2,7 +2,6 @@
 Django框架开发的垃圾管理统计系统
 ## 项目背景:节能环保大赛,我的任务是负责项目的需求分析和项目的结构构思,当然,前后台的编写也都是由我负责.
 ## 一.项目地址:
-### GItHub:[https://github.com/swpu-cxm/GMS](https://github.com/swpu-cxm/GMS "https://github.com/swpu-cxm/GMS")
 ### 线上项目:[http://match.cxmgxj.cn/](http://match.cxmgxj.cn/ "http://match.cxmgxj.cn/")
 ## 二.功能列表:
 ### 1.用户投放垃圾
