@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>管理员页面</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    {% if is_auth %}
+        <a href="/logout" class="am-btn am-btn-danger am-btn-block">退出登录</a>
+        <button
+                type="button"
+                class="am-btn am-btn-warning am-btn-block"
+                id="doc-prompt-toggle">
+            设置报警值
+        </button>
+    {% else %}
+        <a href="/login" class="am-btn am-btn-primary am-btn-block">登录</a>
+    {% endif %}
+    <table class="am-table am-table-striped am-table-hover">
+        <thead>
+        <tr>
+            <th width="15%">序号</th>
+            <th width="25%">点位</th>
+            <th width="25%">总量</th>
+            <th width="35%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for garbage_obj in garbage_objs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ garbage_obj.place }}</td>
+                <td>{{ garbage_obj.totle }}</td>
+                <td>
+                    <a href="/app_manager/{{ garbage_obj.id }}" class="btn btn-success"
+                       style="background-color: #4b784b">详情</a>
+                    <a href="/flash/{{ garbage_obj.id }}" class="btn btn-warning">清理</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">设置报警标准</div>
+            <div class="am-modal-bd">
+                地点:
+                <select id="js-selected" class="am-modal-prompt-input" style="background-color: #77e977">
+                    <option value="0">所有点位</option>
+                    {% for garbage_obj in garbage_objs %}
+                        <option value="{{ garbage_obj.id }}">{{ garbage_obj.place }}----{{ garbage_obj.max_size }}</option>
+                    {% endfor %}
+                </select>
+                阈值:
+                <input type="text" class="am-modal-prompt-input" placeholder="">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('#doc-prompt-toggle').on('click', function () {
+                $('#my-prompt').modal({
+                    relatedTarget: this,
+                    onConfirm: function (e) {
+                        //console.log(e.data[0],e.data[1]);
+                        $.ajax({
+                            type: "get",
+                            dataType: "text",
+                            url: "/set_max/" + e.data[0] + '/' + e.data[1],
+                            success: function (data) {
+                                location.reload();
+                            },
+                            error: function () {
+                                //后台返回的是字符串，与请求设定的数据类型json不一致，会执行error回调函数，而不是success
+                                location.reload();
+                            }
+                        })
+                    },
+                    onCancel: function (e) {
+
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

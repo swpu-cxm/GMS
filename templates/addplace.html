@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>添加地点</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body, button, input, select, textarea {
+            font: 12px/16px Verdana, Helvetica, Arial, sans-serif;
+        }
+
+        p {
+            width: 603px;
+            padding-top: 3px;
+            overflow: hidden;
+        }
+
+
+    </style>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=JRNBZ-EMV3X-XFC4U-75NJO-UGY6K-ZCBOF"></script>
+    <script>
+        var init = function () {
+            $('#container').width($(window).width());
+            $('#container').height($(window).height());
+            var center = new qq.maps.LatLng(30.823321334254103, 104.18510377407074);
+            var map = new qq.maps.Map(document.getElementById("container"), {
+                center: center,
+                mapTypeId: qq.maps.MapTypeId.ROADMAP,
+                zoom: 15,
+            });
+            //绑定单击事件添加参数
+            qq.maps.event.addListener(map, 'click', function (event) {
+                //alert('您点击的位置为: [' + event.latLng.getLat() + ', ' + event.latLng.getLng() + ']');
+                $('#la').val(event.latLng.getLat());
+                $('#lo').val(event.latLng.getLng());
+                $('#doc-prompt-toggle').click();
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div id="container"></div>
+    <button type="button" class="am-btn am-btn-success" id="doc-prompt-toggle" style="display: none">
+        添加点位
+    </button>
+
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">添加点位</div>
+            <div class="am-modal-bd">
+                地点名称:
+                <input type="text" class="am-modal-prompt-input">
+                纬度:
+                <input type="text" class="am-modal-prompt-input" id="la">
+                经度:
+                <input type="text" class="am-modal-prompt-input" id="lo" placeholder="10X.xxxxx">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(function () {
+            $('#doc-prompt-toggle').on('click', function () {
+                $('#my-prompt').modal({
+                    relatedTarget: this,
+                    onConfirm: function (e) {
+                        //alert("你要添加的地点是：" + e.data[0] + " 经纬度为: (" + e.data[1] + "," + e.data[2] + ")" );
+                        $.ajax({
+                            type: "get",
+                            dataType: "json",
+                            url: "/addplace/?place=" + e.data[0] + '&la=' + e.data[1] + '&lo=' + e.data[2],
+                            success: function (data) {
+                                window.location.href='/app_place';
+                            },
+                            error: function () {
+                                //后台返回的是字符串，与请求设定的数据类型json不一致，会执行error回调函数，而不是success
+                                window.location.href='/app_place';
+                            }
+                        })
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+

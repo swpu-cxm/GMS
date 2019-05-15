@@ -1,0 +1,124 @@
+<!doctype html>
+{% load static %}
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <style>
+        #tool-bar li a{
+            color: black;
+        }
+    </style>
+    {% block head %}
+
+    {% endblock %}
+</head>
+<body onload="init();">
+<!--在这里编写你的代码-->
+<!--页头开始-->
+<header data-am-widget="header" class="am-header am-header-default" style="background-color: #4b784b;">
+    <div class="am-header-left am-header-nav" style="padding-top: 10px" >
+        <a href="javascript:history.back(-1)" class="">
+            <i class="fa fa-long-arrow-left fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <h1 class="am-header-title" style="padding-top: 10px">
+        <a href="/">
+            垃圾管理系统
+        </a>
+    </h1>
+
+    <div class="am-header-right am-header-nav" style="padding-top: 10px">
+        <a href="">
+            <i class="fa fa-undo fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
+</header>
+
+<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default " id="tool-bar">
+    <ul class="am-navbar-nav am-cf am-avg-sm-4" style="background-color: rgb(220,220,217);">
+        <li>
+            <a href="/app_map/" class="">
+                <i class="fa fa-globe fa-2x"></i>
+                <span class="am-navbar-label">地图查看</span>
+            </a>
+        </li>
+        <li>
+            <a href="/app_place/" class="">
+                <i class="fa fa-map-marker fa-2x"></i>
+                <span class="am-navbar-label">点位管理</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="" id="history">
+                <i class="fa fa-bar-chart fa-2x"></i>
+                <span class="am-navbar-label">历史数据</span>
+            </a>
+            <script>
+                function FormatDate(date) {
+                    //var date = new Date();
+                    var seperator1 = "-";
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentdate = year + seperator1 + month + seperator1 + strDate;
+                    return currentdate;
+                }
+
+                var curDate = new Date();
+                var date = new Date(curDate.getTime() - 24 * 60 * 60 * 1000);
+                date = FormatDate(date);
+                //console.log(date);
+                var url = '/app_history/' + date + '/' + date + '/bar/0/'
+                $('#history').attr('href', url);
+            </script>
+        </li>
+        <li>
+            <a href="/app_admin" class="">
+                <i class="fa fa-user fa-2x"></i>
+                <span class="am-navbar-label">管理员</span>
+            </a>
+        </li>
+
+    </ul>
+</div>
+<!--页面内容开始-->
+{% block body %}
+
+{% endblock %}
+<!--页面内容开始-->
+
+
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<![endif]-->
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+</body>
+</html>

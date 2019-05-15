@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>垃圾分类</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div style="text-align: center"><h1>垃圾分类系统</h1></div>
+            <div style="margin: 40px">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">垃圾种类</span>
+                    <select class="form-control" name="_class">
+                        <option value="class_1">可回收垃圾</option>
+                        <option value="class_2">有害垃圾</option>
+                        <option value="class_3">餐厨垃圾</option>
+                        <option value="class_4">其他垃圾</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin: 40px">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">垃圾数量</span>
+                    <select class="form-control" name="count">
+                        <option value="1">1袋</option>
+                        <option value="2">2袋</option>
+                        <option value="3">3袋</option>
+                        <option value="4">4袋</option>
+                        <option value="5">5袋</option>
+                        <option value="6">6袋</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin: 40px">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">垃圾袋规格</span>
+                    <select class="form-control" name="size">
+                        <option value="21.5">小号</option>
+                        <option value="24.5">中号</option>
+                        <option value="34">大号</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin: 40px">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon">垃圾桶状态</span>
+                    <select class="form-control" name="status">
+                        <option value="1">未满</option>
+                        <option value="2">满</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin: 40px">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon" >领取积分凭证:</span>
+                    <input type="text" class="form-control" name="username">
+                </div>
+            </div>
+
+            <div style="margin: 40px">
+                <input type="submit" class="btn btn-success btn-lg pull-right" value="提交">
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+</body>
+</html>

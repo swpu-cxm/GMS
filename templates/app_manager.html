@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>点位实时数据查看</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <select id="js-selected" class="form-control" style="margin-top: 15px;background-color: #59d759">
+        {% for garbage_obj in garbage_objs %}
+            <option value="{{ garbage_obj.id }}" >{{ garbage_obj.place }}</option>
+        {% endfor %}
+    </select>
+    <div id="main" style="width: 100%;height:450px"></div>
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    title: {
+                        //text: '{{ garbage.place }}栋垃圾投放点', //大标题
+                        subtext: '{{ garbage.place }}栋垃圾投放点' //小标题
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['有害垃圾', '餐厨垃圾', '其它垃圾', '可回收垃圾'] //顶部数据颜色的标注
+                    },
+                    toolbox: {
+                        //show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [ //横坐标
+                        {
+                            type: 'category',
+                            data: ['可回收垃圾 餐厨垃圾 有害垃圾 其他垃圾 ']
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} KG'
+                            }
+                        }
+                    ],
+                    series: [ //柱状图中显示的数据
+                        {
+                            name: '可回收垃圾',
+                            type: 'bar',
+                            data: [{{ garbage.class_1 }}],
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name: '餐厨垃圾',
+                            type: 'bar',
+                            data: [{{ garbage.class_3 }}],
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name: '有害垃圾',
+                            type: 'bar',
+                            data: [{{ garbage.class_2 }}],
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name: '其它垃圾',
+                            type: 'bar',
+                            data: [{{ garbage.class_4 }}],
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+
+                    ]
+                };
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+        );
+    </script>
+    <a href="/flash/{{ garbage.id }}/" class="am-btn am-btn-warning am-btn-block">清理垃圾</a>
+    <!---->
+
+
+
+
+    <script>
+        $(function () {
+            $("#js-selected").find("option[value='{{ garbage.id }}']").attr("selected",true);
+            var $selected = $('#js-selected');
+            $selected.on('change', function () {
+                var url = '/app_manager/' + $(this).val();
+                //console.log(url);
+                window.location.href = url;
+            });
+        });
+    </script>
+    <!---->
+{% endblock %}

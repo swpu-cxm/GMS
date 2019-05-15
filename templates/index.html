@@ -1,0 +1,158 @@
+<!doctype html>
+{% load static %}
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <style>
+        #tool-bar li a {
+            color: black;
+        }
+
+        img {
+            box-sizing: border-box;
+            /* v2.3 开始移除以下代码，详见 #502 */
+            /* max-width: 100%;
+            height: auto;*/
+            vertical-align: middle;
+            border: 0;
+        }
+
+        body {
+            background-color: white;
+        }
+    </style>
+    <script>
+        $(document).on("pagecreate", "#lbt", function () {
+            $("li").on("tap", function () {
+                console.log('ok');
+            });
+        });
+    </script>
+</head>
+<body onload="init();">
+<!--在这里编写你的代码-->
+<!--页头开始-->
+
+
+<div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default" id="tool-bar" style="display: none">
+    <ul class="am-navbar-nav am-cf am-avg-sm-4" style="background-color: rgb(220,220,217);">
+        <li>
+            <a href="/app_map/" class="">
+                <i class="fa fa-globe fa-2x"></i>
+                <span class="am-navbar-label">地图查看</span>
+            </a>
+        </li>
+        <li>
+            <a href="/app_place/" class="">
+                <i class="fa fa-map-marker fa-2x"></i>
+                <span class="am-navbar-label">点位管理</span>
+            </a>
+        </li>
+        <li>
+            <a href="" class="" id="history">
+                <i class="fa fa-bar-chart fa-2x"></i>
+                <span class="am-navbar-label">历史数据</span>
+            </a>
+            <script>
+                function FormatDate(date) {
+                    //var date = new Date();
+                    var seperator1 = "-";
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {
+                        month = "0" + month;
+                    }
+                    if (strDate >= 0 && strDate <= 9) {
+                        strDate = "0" + strDate;
+                    }
+                    var currentdate = year + seperator1 + month + seperator1 + strDate;
+                    return currentdate;
+                }
+
+                var curDate = new Date();
+                var date = new Date(curDate.getTime() - 24 * 60 * 60 * 1000);
+                date = FormatDate(date);
+                //console.log(date);
+                var url = '/app_history/' + date + '/' + date + '/bar/0/'
+                $('#history').attr('href', url);
+            </script>
+        </li>
+        <li>
+            <a href="/app_admin" class="">
+                <i class="fa fa-user fa-2x"></i>
+                <span class="am-navbar-label">管理员</span>
+            </a>
+        </li>
+
+    </ul>
+</div>
+<!--页面内容开始-->
+
+<div data-am-widget="slider" class="am-slider" data-am-slider='{"controlNav":false}' data-role="page">
+    <ul class="am-slides">
+        <li>
+            <img class="am-img-responsive " src="https://abccba1-1256117941.cos.ap-chengdu.myqcloud.com/img/back1.jpg">
+        </li>
+        <li>
+            <img class="am-img-responsive " src="https://abccba1-1256117941.cos.ap-chengdu.myqcloud.com/img/back2.jpg">
+        </li>
+        <li>
+            <img class="am-img-responsive " src="https://abccba1-1256117941.cos.ap-chengdu.myqcloud.com/img/back3.jpg">
+        </li>
+    </ul>
+</div>
+<blockquote>
+    <h3 class="am-animation-slide-bottom am-animation-delay-1" style="color: #00A000">可回收垃圾: <p style="font-size: 12px">
+        废纸、废金属、饮料瓶、酒瓶等可回收垃圾可以专门收集起来卖给废品回收人员或者直接卖给废品收购站。</p>
+    </h3>
+    <h3 class="am-animation-slide-bottom am-animation-delay-2" style="color: #a07e29">厨余垃圾：<p style="font-size: 12px">
+        剩饭菜、果蔬皮壳等，经过生物技术处理可以做成有机肥料或动物饲料，不仅对垃圾进行了处理，还减少了化肥的使用。</p>
+    </h3>
+    <h3 class="am-animation-slide-bottom am-animation-delay-3" style="color: red">有害垃圾：<p style="font-size: 12px">
+        废电池、水银温度计、过期药品等因其对环境具有很大的危害，需要专门通过特殊手段处理。</p>
+    </h3>
+    <h3 class="am-animation-slide-bottom am-animation-delay-4" style="color: #2077a0">其他垃圾：<p style="font-size: 12px">
+        建筑垃圾、卫生用纸等无法回收利用的垃圾对环境没有较大的危害，可以通过填埋等方法进行处理。</p></h3>
+    <h2 class="am-animation-slide-bottom am-animation-delay-5" style="text-align: center;color: black">垃圾分类,从我做起 <br>
+        <small style="text-align:center">GCMS1.0</small>
+    </h2>
+
+</blockquote>
+<script>
+    setTimeout(function () {
+        $('#tool-bar').addClass('am-animation-slide-bottom am-animation-delay-1');
+        $('#tool-bar').show();
+    }, 7000);
+
+</script>
+
+<!--页面内容开始-->
+
+
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js"></script>
+</body>
+</html>

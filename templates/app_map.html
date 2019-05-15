@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>管理员地图</title>
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body, button, input, select, textarea {
+            font: 12px/16px Verdana, Helvetica, Arial, sans-serif;
+        }
+
+        p {
+            width: 603px;
+            padding-top: 3px;
+            overflow: hidden;
+        }
+    </style>
+    <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=JRNBZ-EMV3X-XFC4U-75NJO-UGY6K-ZCBOF"></script>
+    <script>
+        var init = function () {
+            $('#container').width($(window).width());
+            $('#container').height($(window).height());
+            var center = new qq.maps.LatLng(30.823321334254103, 104.18510377407074);
+            var map = new qq.maps.Map(document.getElementById("container"), {
+                center: center,
+                mapTypeId: qq.maps.MapTypeId.ROADMAP,
+                zoom: 15,
+            });
+            var anchor = new qq.maps.Point(6, 6),
+                size = new qq.maps.Size(24, 24),
+                origin = new qq.maps.Point(0, 0),
+                icon1 = new qq.maps.MarkerImage('{% static 'images/center.gif' %}', size, origin, anchor);
+                icon2 = new qq.maps.MarkerImage('{% static 'images/marker.png' %}', size, origin, anchor);
+            //var point = new qq.maps.LatLng(39.982163, 116.306070);
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/app_map/",
+                success: function (data) {
+                    console.log(data);
+                    for (var j = 0; data.length; j++) {
+                        obj = {
+                            'id': data[j].id,
+                            'name': data[j].place,
+                            'x': data[j].latitude,
+                            'y': data[j].longitude,
+                        };
+                        console.log(data[j].status);
+                        if(data[j].status == 'ok'){
+                            var flag=icon2;
+                        }
+                        else{
+                            var flag=icon1;
+                        }
+                        obj.place = new qq.maps.LatLng(obj.x, obj.y);
+                        console.log(obj);
+                        var marker = new qq.maps.Marker({
+                            id: obj.id,
+                            position: obj.place, //new qq.maps.LatLng(place_list[j].x, place_list[j].y),
+                            map: map,
+                            icon:flag,
+                            //title: obj.place,
+                        });
+                        qq.maps.event.addListener(marker, 'click', function (event) {
+                            window.location.href = '/app_manager/' + event.target.id;
+                        });
+
+                    }
+                }
+            });
+
+
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div id="container" onload="init();"></div>
+{% endblock %}

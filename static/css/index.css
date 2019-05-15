@@ -1,0 +1,34 @@
+body {
+    background: url(../footer_lodyas.png) no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #CCCCCC;
+}
+
+.navbar li {
+    margin-left: 20px;
+}
+
+.header-img {
+    width: 100px;
+    height: 100px;
+    border: 3px solid gray;
+    border-radius: 50%;
+    overflow: hidden;
+    /*margin-left: 10px;*/
+}
+
+.header-img > img {
+    max-width: 100%;
+}
+
+.my-links {
+    border-top: 1px solid black;
+}
+
+.my-links ul li {
+    list-style: none;
+    float: left;
+    margin-top: 5px;
+    margin-left: 10px;
+}

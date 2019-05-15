@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <title>点位管理</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <a class="am-btn am-btn-success am-btn-block" href="/app_addplace">添加点位</a>
+    <table class="am-table am-table-striped am-table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>投放点地址</th>
+            <!--<th>经纬度</th>-->
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for garbage in garbages %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <th>{{ garbage.place }}</th>
+                <!--<th>({{ garbage.latitude }},{{ garbage.longitude }})</th>-->
+                <th>
+                    <a href="/delete_place/{{ garbage.id }}" class="btn btn-danger delete-button">删除</a>
+                    <button
+                            type="button"
+                            class="am-btn "
+                            style="background-color: #4b784b"
+                            data-am-modal="{target: '#my-alert-{{ garbage.id }}'}">
+                        生成二维码
+                    </button>
+                    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert-{{ garbage.id }}">
+                        <div class="am-modal-dialog">
+                            <div class="am-modal-hd">{{ garbage.place }}二维码</div>
+                            <div class="am-modal-bd">
+                                <div id="qrcode{{ garbage.id }}"></div>
+                                <script>
+                                    jQuery('#qrcode{{ garbage.id }}').qrcode("http://match.cxmgxj.cn/user/{{ garbage.id }}/");
+                                </script>
+                            </div>
+                            <div class="am-modal-footer">
+                                <span class="am-modal-btn">确定</span>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <!--添加点位开始-->
+
+
+    <!--添加点位结束-->
+
+{% endblock %}

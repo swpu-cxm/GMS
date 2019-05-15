@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提交成功</title>
+</head>
+<body>
+{% if grade %}
+    <h1>感谢你在百忙之中参与垃圾分类,你的账号:{{ username }}积分已经有{{ grade }}啦!</h1>
+{% else %}
+    <h1>感谢你在百忙之中参与垃圾分类!</h1>
+{% endif %}
+</body>
+</html>
